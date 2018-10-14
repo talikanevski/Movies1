@@ -4,12 +4,17 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -130,8 +135,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<List<Movie>> onCreateLoader(int i, Bundle bundle) {
         Log.i(LOG_TAG, "Test:  onCreateLoader called");
 
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        /** getString retrieves a String value from the preferences.
+         // The second parameter is the default value for this preference.**/
+
+        String sortBy = sharedPrefs.getString(
+                getString(R.string.settings_sort_by_key),
+                getString(R.string.settings_sort_by_default)
+        );
+
+        /** parse breaks apart the URI string that's passed into its parameter**/
+        Uri baseUri = Uri.parse(THE_MOVIE_DB_REQUEST_URL);
+
+        /** buildUpon prepares the baseUri that we just parsed so we can add query parameters to it**/
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        /**Append query parameter and its value.**/
+        uriBuilder.appendQueryParameter("sort_by", sortBy); /**the most popular movies: sort_by=popularity.desc
+         * the highest rated movies : sort_by=vote_average.desc**/
+
         // Create a new loader for the given URL
-        return new MovieLoader(this, THE_MOVIE_DB_REQUEST_URL);
+        return new MovieLoader(this,  uriBuilder.toString());
     }
 
     @Override
@@ -182,4 +207,45 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         intent.putExtra(DetailActivity.CURRENT_MOVIE, (Parcelable) currentMovie);
         startActivity(intent);
     }
+
+    @Override
+    /** This method initialize the contents of the Activity's options menu.
+     /** onCreateOptionsMenu() inflates the Options Menu specified in the XML
+     * when the MainActivity opens up, it actually make it visible.**/
+    public boolean onCreateOptionsMenu(Menu menu) {
+        /** Inflate the Options Menu we specified in XML**/
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    /**
+     * This method is where we can setup the specific action
+     * that occurs when any of the items in the Options Menu are selected.
+     * <p>
+     * This method passes the MenuItem that is selected:
+     * <p>
+     * public boolean onOptionsItemSelected(MenuItem item)
+     **/
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        /** An Options Menu may have one or more items.
+         *
+         * To determine which item was selected and what action to take,
+         * call getItemId, which returns the unique ID for the menu item
+         * (defined by the android:id attribute in the menu resource).**/
+
+        int id = item.getItemId();
+        /** In our case, our menu only has one item
+         *  (which we setup in main.xml)
+         * android:id="@+id/action_settings".**/
+        if (id == R.id.action_settings) {
+            /**  You then match the ID against known menu items to perform the appropriate action.
+             * In our case, we open the SettingsActivity via an intent.**/
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
