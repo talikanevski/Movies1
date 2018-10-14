@@ -30,8 +30,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String LOG_TAG = MainActivity.class.getName();
 
     private static final String THE_MOVIE_DB = "https://api.themoviedb.org/3/discover/movie?";
-    private static final String API_Key = "api_key=27489f2914bd9f638025496deaad801e";
-    private static final String THE_MOVIE_DB_REQUEST_URL = THE_MOVIE_DB + API_Key;
+    private static final String API_Key_Lable = "api_key=";
+    private static final String API_Key = BuildConfig.ApiKey;
+    private static final String THE_MOVIE_DB_REQUEST_URL = THE_MOVIE_DB + API_Key_Lable + API_Key;
 
     /**
      * Constant value for the movies loader ID. We can choose any integer.
