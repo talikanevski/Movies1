@@ -22,7 +22,15 @@
         <activity
             android:name=".DetailActivity"
             android:label="Details"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings_title"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.ded.movies.MainActivity"/>
+        </activity>
     </application>
 
 </manifest>
