@@ -30,6 +30,7 @@ public final class QueryUtils {
 
     private QueryUtils() {
     }
+
     public static List<Movie> extractFeatureFromJson(String jsonResponse) {
         String title;
         String overview;

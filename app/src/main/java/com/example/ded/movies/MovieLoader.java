@@ -11,12 +11,16 @@ import java.util.List;
  * network request to the given URL.
  */
 
-public class MovieLoader  extends AsyncTaskLoader<List<Movie>> {
+public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
-    /** Tag for log messages */
+    /**
+     * Tag for log messages
+     */
     public static final String LOG_TAG = MovieLoader.class.getName();
 
-    /** Query URL */
+    /**
+     * Query URL
+     */
     private String mUrl;
 
     public MovieLoader(Context context, String url) {

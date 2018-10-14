@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,16 +25,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public static final String LOG_TAG = MainActivity.class.getName();
 
     private static final String THE_MOVIE_DB = "https://api.themoviedb.org/3/discover/movie?";
-    private static final String API_Key = "api_key=27489f2914bd9f638025496deaad801e";
-    private static final String THE_MOVIE_DB_REQUEST_URL = THE_MOVIE_DB + API_Key;
+    private static final String API_Key_Lable = "api_key=";
+    private static final String API_Key = BuildConfig.ApiKey;
+    private static final String THE_MOVIE_DB_REQUEST_URL = THE_MOVIE_DB + API_Key_Lable + API_Key;
 
-    /**Constant value for the movies loader ID. We can choose any integer.*/
+    /**
+     * Constant value for the movies loader ID. We can choose any integer.
+     */
     private static final int MOVIES_LOADER_ID = 1;
 
-    /** Adapter for the list of movies */
+    /**
+     * Adapter for the list of movies
+     */
     private MovieAdapter mAdapter;
 
-    /** TextView that is displayed when the list is empty**/
+    /**
+     * TextView that is displayed when the list is empty
+     **/
     private TextView mEmptyStateTextView;
 
     @Override
@@ -42,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         setContentView(R.layout.activity_main);
 
         /** Find a reference to the {@link ListView} in the layout**/
-        ListView moviesListView = (ListView) findViewById(R.id.list);
+        GridView moviesGridView = (GridView) findViewById(R.id.grid);
 
         mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
-        moviesListView.setEmptyView(mEmptyStateTextView);
+        moviesGridView.setEmptyView(mEmptyStateTextView);
 
         /**Create a new {@link ArrayAdapter} of movies
          // Create a new adapter that takes an empty list of movies as input**/
@@ -53,28 +62,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         /**Set the adapter on the {@link ListView}
          // so the list can be populated in the user interface**/
-        moviesListView.setAdapter(mAdapter);
+        moviesGridView.setAdapter(mAdapter);
 
-        /** Set an item click listener on the ListView, which sends an intent to **/
-        moviesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /** Set an activity_detail click listener on the ListView, which sends an intent to **/
+        moviesGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 /**Find the current news article that was clicked on**/
                 Movie currentMovie = mAdapter.getItem(position);
-
-//                /** Convert the String URL into a URI object (to pass into the Intent constructor)
-//                 /** The Intent constructor requires a Uri object, so we need to convert the URL
-//                 * (in the form of a String) into a URI.The news URL is a more specific form of a URI,
-//                 * so we can use the Uri.parse method**/
-//
-//                Uri articleUri = Uri.parse(currentArticle.getUrl());
-//
-//                /** Once we have the website URL in a Uri object, we can create a new intent**/
-//                /**Create a new intent to view the earthquake URI**/
-//                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, articleUri);
-//
-//                /** Send the intent to launch a new activity**/
-//                startActivity(websiteIntent);
+                launchDetailActivity(currentMovie);
             }
         });
         /** In case that there is no internet connection:
@@ -179,5 +175,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void reload() {
         getLoaderManager().restartLoader(MOVIES_LOADER_ID, null, this);
+    }
+
+    private void launchDetailActivity(Movie currentMovie) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.CURRENT_MOVIE, (Parcelable) currentMovie);
+        startActivity(intent);
     }
 }
