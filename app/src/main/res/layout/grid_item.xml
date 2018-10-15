@@ -8,7 +8,7 @@
         android:id="@+id/grid_poster"
         android:layout_width="120dp"
         android:layout_height="180dp"
-        android:contentDescription="poster"
+        android:contentDescription="@string/poster"
         android:scaleType="fitCenter" />
 
 </FrameLayout>

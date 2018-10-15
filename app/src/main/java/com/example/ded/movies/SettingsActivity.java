@@ -16,7 +16,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
     }
 
-    public static class MoviePreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener{
+    public static class MoviePreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -41,15 +41,14 @@ public class SettingsActivity extends AppCompatActivity {
             } else {
                 preference.setSummary(stringValue);
             }
-
             return true;
         }
 
         private void bindPreferenceSummaryToValue(Preference preference) {
             preference.setOnPreferenceChangeListener(this);
-            /**We read the current value of the preference stored in the SharedPreferences on the device,
-             * and display that in the preference summary
-             * (so that the user can see the current value of the preference): **/
+            /*We read the current value of the preference stored in the SharedPreferences on the device,
+              and display that in the preference summary
+              (so that the user can see the current value of the preference): **/
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
             String preferenceString = preferences.getString(preference.getKey(), "");
             onPreferenceChange(preference, preferenceString);

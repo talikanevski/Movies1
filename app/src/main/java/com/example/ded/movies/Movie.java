@@ -5,12 +5,12 @@ import android.os.Parcelable;
 
 /**  http://www.vogella.com/tutorials/AndroidParcelable/article.html **/
 public class Movie implements Parcelable {
-    private String mTitle; /** title of the movie  */
-    private String mOverview ;/**movie overview */
-    private String mReleaseDate; /**release date of the movie */
-    private String mUserRating; /*** user rating */
-    private String mPoster;/** movie poster*/
-    private String mBackdrop; /** backdrop**/
+    private final String mTitle; /** title of the movie  */
+    private final String mOverview ;/**movie overview */
+    private final String mReleaseDate; /**release date of the movie */
+    private final String mUserRating; /*** user rating */
+    private final String mPoster;/** movie poster*/
+    private final String mBackdrop; /** backdrop**/
 
     public Movie(String title, String overview, String releaseDate, String userRating, String poster, String backdrop) {
         mTitle = title;
@@ -21,7 +21,7 @@ public class Movie implements Parcelable {
         mBackdrop = backdrop;
     }
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         mTitle = in.readString();
         mOverview = in.readString();
         mReleaseDate = in.readString();
@@ -51,8 +51,6 @@ public class Movie implements Parcelable {
     public String getUserRating() {return mUserRating;}
 
     public String getPoster() {return mPoster;}
-
-    public String getBackdrop() {return mBackdrop;}
 
     @Override
     public int describeContents() {

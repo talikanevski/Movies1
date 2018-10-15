@@ -11,7 +11,7 @@ import java.util.List;
  * network request to the given URL.
  */
 
-public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
+class MovieLoader extends AsyncTaskLoader<List<Movie>> {
 
     /**
      * Tag for log messages
@@ -21,7 +21,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
     /**
      * Query URL
      */
-    private String mUrl;
+    private final String mUrl;
 
     public MovieLoader(Context context, String url) {
         super(context);
@@ -35,6 +35,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
         forceLoad();
     }
 
+    @SuppressWarnings("UnnecessaryLocalVariable")
     @Override
     public List<Movie> loadInBackground() {
         Log.i(LOG_TAG, "Test:  loadInBackground called");
@@ -43,8 +44,7 @@ public class MovieLoader extends AsyncTaskLoader<List<Movie>> {
             return null;
         }
 
-        /**Perform the network request, parse the response, and extract a list of news.**/
-        List<Movie> movies = QueryUtils.fetchNewsData(mUrl);
-        return movies;
+        /*Perform the network request, parse the response, and extract a list of news.**/
+        return QueryUtils.fetchNewsData(mUrl);
     }
 }

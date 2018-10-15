@@ -26,12 +26,12 @@ import static com.example.ded.movies.MovieLoader.LOG_TAG;
 /**
  * Helper methods related to requesting and receiving movies from "The Movie DB".
  */
-public final class QueryUtils {
+final class QueryUtils {
 
     private QueryUtils() {
     }
 
-    public static List<Movie> extractFeatureFromJson(String jsonResponse) {
+    private static List<Movie> extractFeatureFromJson(String jsonResponse) {
         String title;
         String overview;
         String releaseDate;
@@ -39,12 +39,12 @@ public final class QueryUtils {
         String thumbnail;
         String backdrop;
 
-        /**If the JSON string is empty or null, then return early.**/
+        /*If the JSON string is empty or null, then return early.**/
         if (TextUtils.isEmpty(jsonResponse)) {
             return null;
         }
 
-        /**Create an empty ArrayList that we can start adding movies to**/
+        /*Create an empty ArrayList that we can start adding movies to**/
         List<Movie> movies = new ArrayList<>();
 
         try {
@@ -65,12 +65,12 @@ public final class QueryUtils {
             }
 
         } catch (JSONException e) {
-            /** an error is thrown when executing any of the above statements in the "try" block,
+            /* an error is thrown when executing any of the above statements in the "try" block,
              // catch the exception here, so the app doesn't crash. Print a log message
              // with the message from the exception.**/
             Log.e("QueryUtils", "Problem parsing the news JSON results", e);
         }
-        /** Return the list of movies  **/
+        /* Return the list of movies  **/
         return movies;
     }
 
@@ -93,7 +93,7 @@ public final class QueryUtils {
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
-        /** If the URL is null, then return early. **/
+        /* If the URL is null, then return early. **/
         if (url == null) {
             return jsonResponse;
         }
@@ -107,9 +107,9 @@ public final class QueryUtils {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            /**If the request was successful (response code 200 or urlConnection.HTTP_OK),
+            /*If the request was successful (response code 200 or urlConnection.HTTP_OK),
              // then read the input stream and parse the response. **/
-            if (urlConnection.getResponseCode() == urlConnection.HTTP_OK) {
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -122,7 +122,7 @@ public final class QueryUtils {
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
-                /** Closing the input stream could throw an IOException, which is why
+                /* Closing the input stream could throw an IOException, which is why
                  // the makeHttpRequest(URL url) method signature specifies than an IOException
                  // could be thrown. **/
                 inputStream.close();
@@ -149,13 +149,13 @@ public final class QueryUtils {
         return output.toString();
     }
 
-    /** the fetchNewsData() helper method that ties all the steps together -
-     * creating a URL, sending the request, processing the response.
-     * Since this is the only “public” QueryUtils method that the MovieAsyncTask needs to interact with,
-     * make all other helper methods in QueryUtils “private”.**/
+    /* the fetchNewsData() helper method that ties all the steps together -
+      creating a URL, sending the request, processing the response.
+      Since this is the only “public” QueryUtils method that the MovieAsyncTask needs to interact with,
+      make all other helper methods in QueryUtils “private”.**/
 
     /**
-     * Query the The MovieDB dataset and return a list of Movie objects.
+     * Query the The MovieDB data set and return a list of Movie objects.
      */
     public static List<Movie> fetchNewsData(String requestUrl) {
 
@@ -173,10 +173,10 @@ public final class QueryUtils {
 //            e.printStackTrace();
 //        }
 
-        /** Create URL object **/
+        /* Create URL object **/
         URL url = createUrl(requestUrl);
 
-        /** Perform HTTP request to the URL and receive a JSON response back **/
+        /* Perform HTTP request to the URL and receive a JSON response back **/
         String jsonResponse = null;
         try {
             jsonResponse = makeHttpRequest(url);
@@ -184,10 +184,9 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        /** Extract relevant fields from the JSON response and create a list of Movies **/
-        List<Movie> movies = extractFeatureFromJson(jsonResponse);
+        /* Extract relevant fields from the JSON response and create a list of Movies
+          Return the list of movies **/
 
-        // Return the list of movies
-        return movies;
+        return extractFeatureFromJson(jsonResponse);
     }
 }

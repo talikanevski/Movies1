@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#000000"
+    tools:ignore="Overdraw">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
             android:id="@+id/backdrop"
             android:layout_width="match_parent"
             android:layout_height="188dp"
-            android:contentDescription="backdrop"
+            android:contentDescription="@string/backdrop"
             android:scaleType="centerCrop" />
 
         <ImageView
@@ -24,7 +25,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginTop="148dp"
-            android:contentDescription="poster"
+            android:contentDescription="@string/poster"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/backdrop" />
 
@@ -96,9 +97,9 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:text="Overview"
+            android:text="@string/overview"
             android:textColor="#FFFFFF"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/overview"
             app:layout_constraintEnd_toEndOf="parent"
